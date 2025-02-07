@@ -7,12 +7,8 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 import { useAuth } from 'src/auth'
 import Container from 'src/components/Container/Container'
 import PageCenter from 'src/components/PageCenter/PageCenter'
-
-
-type FormError = {
-  error: boolean,
-  message: string,
-}
+import { FormError } from 'src/lib/types'
+import BrandLogo from 'src/components/BrandLogo/BrandLogo'
 
 const LoginPage = () => {
   const { isAuthenticated, logIn } = useAuth()
@@ -23,7 +19,7 @@ const LoginPage = () => {
   const [loginPassword, setLoginPassword] = useState<string>('')
   const [loginPasswordErrors, setLoginPasswordErrors] = useState<FormError>({error: false, message: ''})
 
-
+  const [disableFields, setDisableFields] = useState<boolean>(false);
 
   const checkInputValues = (emailAddress:string, password:string):boolean => {
     let valid = true
@@ -56,16 +52,18 @@ const LoginPage = () => {
     // Login the User
     if(inputsAreValid){
 
+      setDisableFields(true)
+
       const response = await logIn({
         username: loginEmailAddress,
         password: loginPassword,
       })
 
       if (response.error) {
+        setDisableFields(false)
         toast.error(response.error)
       }
     }
-
 
   }
 
@@ -84,12 +82,9 @@ const LoginPage = () => {
       <PageCenter>
         <Container maxWidth={400}>
           <Pane marginY={minorScale(9)} gap={minorScale(2)} display="flex" flexDirection="column" justifyContent="center" alignItems="center" padding={minorScale(6)} border="default">
-            <Badge color="blue">BRAND LOGO HERE</Badge>
+            <BrandLogo />
             <Heading is="h1" width="100%" textAlign="center">Log in to your account</Heading>
             <Pane marginTop={minorScale(6)} display="flex" gap={minorScale(1)} flexDirection="column" justifyContent="center" alignItems="center" width="100%">
-              <form>
-
-              </form>
               <TextInputField
                 width="100%"
                 label="Email Address"
@@ -101,6 +96,7 @@ const LoginPage = () => {
                   setLoginEmailAddressErrors({error: false, message: ''})
                   setLoginEmailAddress(event.target.value)
                 }}
+                disabled={disableFields}
               />
               <TextInputField
                 width="100%"
@@ -114,12 +110,15 @@ const LoginPage = () => {
                   setLoginPasswordErrors({error: false, message: ''})
                   setLoginPassword(event.target.value)
                 }}
+                disabled={disableFields}
               />
               <Button
                 width="100%"
                 appearance='primary'
                 onClick={submitLoginForm}
-                type="submit">
+                type="submit"
+                isLoading={disableFields}
+              >
                 Login
               </Button>
               <Text textAlign="center" marginTop={minorScale(4)}>
