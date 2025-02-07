@@ -1,21 +1,77 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
-import {
-  Form,
-  Label,
-  TextField,
-  PasswordField,
-  FieldError,
-  Submit,
-} from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import PageCenter from 'src/components/PageCenter/PageCenter'
+import Container from 'src/components/Container/Container'
+import { Badge, Button, Heading, minorScale, Pane, Small, Text, TextInputField } from 'evergreen-ui'
+import { FormError } from 'src/lib/types'
+import PasswordRequirements from 'src/components/PasswordRequirements/PasswordRequirements'
+import BrandLogo from 'src/components/BrandLogo/BrandLogo'
 
 const SignupPage = () => {
   const { isAuthenticated, signUp } = useAuth()
+
+
+  const [signupEmailAddress, setSignupEmailAddress] = useState<string>('')
+  const [signupEmailAddressErrors, setSignupEmailAddressErrors] = useState<FormError>({error: false, message: ''})
+
+  const [signupPassword, setSignupPassword] = useState<string>('')
+  const [signupPasswordErrors, setSignupPasswordErrors] = useState<FormError>({error: false, message: ''})
+
+  const [disableFields, setDisableFields] = useState<boolean>(false);
+
+  const checkInputValues = (emailAddress:string, password:string):boolean => {
+    let valid = true
+
+    // Check for email
+    if(!emailAddress){
+      setSignupEmailAddressErrors({error: true, message: 'Email Address must not be blank.'})
+      valid = false
+    }
+
+    // Check for password and requirements
+    if(!password){
+      setSignupPasswordErrors({error: true, message: 'Password must not be blank.'})
+      valid = false
+    } else if(!password.match(/[A-Z]/) || password.length < 8){
+      setSignupPasswordErrors({error: true, message: 'Password must meet the minimum requirements'})
+      valid = false
+    }
+
+    return valid
+
+  }
+
+  const submitSignupForm = async () => {
+
+    // Reset Field Errors
+    setSignupEmailAddressErrors({error: false, message: ''})
+    setSignupPasswordErrors({error: false, message: ''})
+
+    // Check input validity
+    const inputsAreValid = checkInputValues(signupEmailAddress, signupPassword)
+
+    // Sign Up the User
+    if(inputsAreValid){
+
+      setDisableFields(true)
+
+      const response = await signUp({
+        username: signupEmailAddress,
+        password: signupPassword,
+      })
+
+      if (response.error) {
+        toast.error(response.error)
+        setDisableFields(false)
+      }
+    }
+
+  }
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -23,102 +79,67 @@ const SignupPage = () => {
     }
   }, [isAuthenticated])
 
-  // focus on username box on page load
-  const usernameRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    usernameRef.current?.focus()
-  }, [])
-
-  const onSubmit = async (data: Record<string, string>) => {
-    const response = await signUp({
-      username: data.username,
-      password: data.password,
-    })
-
-    if (response.message) {
-      toast(response.message)
-    } else if (response.error) {
-      toast.error(response.error)
-    } else {
-      // user is signed in automatically
-      toast.success('Welcome!')
-    }
-  }
-
   return (
     <>
-      <Metadata title="Signup" />
+      <Metadata title="Sign Up" description="Sign Up" />
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
 
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Signup</h2>
-            </header>
-
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <Label
-                    name="username"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Email Address
-                  </Label>
-                  <TextField
-                    name="username"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    ref={usernameRef}
-                    validation={{
-                      required: {
-                        value: true,
-                        message: 'Username is required',
-                      },
-                    }}
-                  />
-                  <FieldError name="username" className="rw-field-error" />
-
-                  <Label
-                    name="password"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Password
-                  </Label>
-                  <PasswordField
-                    name="password"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
-                    autoComplete="current-password"
-                    validation={{
-                      required: {
-                        value: true,
-                        message: 'Password is required',
-                      },
-                    }}
-                  />
-                  <FieldError name="password" className="rw-field-error" />
-
-                  <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">
-                      Sign Up
-                    </Submit>
-                  </div>
-                </Form>
-              </div>
-            </div>
-          </div>
-          <div className="rw-login-link">
-            <span>Already have an account?</span>{' '}
-            <Link to={routes.login()} className="rw-link">
-              Log in!
-            </Link>
-          </div>
-        </div>
-      </main>
+      <PageCenter>
+        <Container maxWidth={400}>
+          <Pane marginY={minorScale(9)} gap={minorScale(2)} display="flex" flexDirection="column" justifyContent="center" alignItems="center" padding={minorScale(6)} border="default">
+            <Pane borderBottom marginTop={minorScale(6)} marginBottom={minorScale(4)} paddingBottom={minorScale(6)}>
+              <BrandLogo />
+            </Pane>
+            <Heading is="h1" width="100%" textAlign="center">Create a new account</Heading>
+            <Pane marginTop={minorScale(6)} display="flex" gap={minorScale(1)} flexDirection="column" justifyContent="center" alignItems="center" width="100%">
+              <TextInputField
+                width="100%"
+                label="Email Address"
+                placeholder="user@email.com"
+                value={signupEmailAddress}
+                isInvalid={signupEmailAddressErrors.error}
+                validationMessage={signupEmailAddressErrors.error && signupEmailAddressErrors.message}
+                onChange={(event) => {
+                  setSignupEmailAddressErrors({error: false, message: ''})
+                  setSignupEmailAddress(event.target.value)
+                }}
+                disabled={disableFields}
+              />
+              <TextInputField
+                width="100%"
+                label="Password"
+                placeholder="Password"
+                type='password'
+                description={<PasswordRequirements password={signupPassword}/>}
+                value={signupPassword}
+                isInvalid={signupPasswordErrors.error}
+                validationMessage={signupPasswordErrors.error && signupPasswordErrors.message}
+                onChange={(event) => {
+                  setSignupPasswordErrors({error: false, message: ''})
+                  setSignupPassword(event.target.value)
+                }}
+                disabled={disableFields}
+              />
+              <Button
+                width="100%"
+                appearance='primary'
+                onClick={submitSignupForm}
+                type="submit"
+                isLoading={disableFields}
+              >
+                Create Account
+              </Button>
+              <Text textAlign="center" marginTop={minorScale(4)}>
+                Already have an account?
+                <br />
+                <Link className='text-[#3366FF] hover:text-[#2952CC] hover:underline'  to={routes.login()}>
+                  Login!
+                </Link>
+              </Text>
+            </Pane>
+          </Pane>
+        </Container>
+      </PageCenter>
     </>
   )
 }
