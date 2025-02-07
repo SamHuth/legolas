@@ -1,8 +1,8 @@
-import { Badge } from "evergreen-ui";
+import { Badge, Heading } from "evergreen-ui";
 
 const BrandLogo = () => {
   return (
-    <Badge color="green">BRAND LOGO HERE</Badge>
+    <Heading is="h1" fontSize="24px" className="font-alt">Budget Tracker</Heading>
   );
 };
 

@@ -11,3 +11,11 @@
 /**
  * END --- SETUP TAILWINDCSS EDIT
  */
+
+
+.font-alt {
+  font-family: "Shrikhand", serif!important;
+  font-weight: 400!important;
+  font-style: normal!important;
+}
+

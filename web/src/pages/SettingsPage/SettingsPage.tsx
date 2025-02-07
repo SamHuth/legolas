@@ -1,11 +1,10 @@
 // import { Link, routes } from '@redwoodjs/router'
-import { Metadata } from '@redwoodjs/web'
-import { Pane } from 'evergreen-ui'
-import PageHeader from 'src/components/PageHeader/PageHeader'
-import PageNavigation from 'src/components/PageNavigation/PageNavigation'
+import { Metadata } from "@redwoodjs/web";
+import { Pane } from "evergreen-ui";
+import PageHeader from "src/components/PageHeader/PageHeader";
+import PageNavigation from "src/components/PageNavigation/PageNavigation";
 
-const HomePage = () => {
-
+const SettingsPage = () => {
   return (
     <>
       <Metadata title="Home" description="Home page" />
@@ -16,12 +15,12 @@ const HomePage = () => {
         <Pane flexGrow="1" display="flex">
           <PageNavigation />
           <Pane flexGrow="1">
-            Dashboard
+            Settings
           </Pane>
         </Pane>
       </Pane>
     </>
   )
-}
+};
 
-export default HomePage
+export default SettingsPage;

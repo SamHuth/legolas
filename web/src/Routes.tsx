@@ -7,6 +7,10 @@ const Routes = () => {
     <Router useAuth={useAuth}>
       <PrivateSet unauthenticated="login">
         <Route path="/" page={HomePage} name="home" />
+        <Route path="/settings" page={SettingsPage} name="settings" />
+        <Route path="/calendar" page={CalendarPage} name="calendar" />
+        <Route path="/expenses" page={ExpensesPage} name="expenses" />
+        <Route path="/income" page={IncomePage} name="income" />
       </PrivateSet>
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/signup" page={SignupPage} name="signup" />

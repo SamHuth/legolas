@@ -87,7 +87,9 @@ const SignupPage = () => {
       <PageCenter>
         <Container maxWidth={400}>
           <Pane marginY={minorScale(9)} gap={minorScale(2)} display="flex" flexDirection="column" justifyContent="center" alignItems="center" padding={minorScale(6)} border="default">
-            <BrandLogo />
+            <Pane borderBottom marginTop={minorScale(6)} marginBottom={minorScale(4)} paddingBottom={minorScale(6)}>
+              <BrandLogo />
+            </Pane>
             <Heading is="h1" width="100%" textAlign="center">Create a new account</Heading>
             <Pane marginTop={minorScale(6)} display="flex" gap={minorScale(1)} flexDirection="column" justifyContent="center" alignItems="center" width="100%">
               <TextInputField
