@@ -1,6 +1,5 @@
-// import { Link, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
-import { Pane } from 'evergreen-ui'
+import { EmptyState, minorScale, Pane, WidgetIcon } from 'evergreen-ui'
 import PageHeader from 'src/components/PageHeader/PageHeader'
 import PageNavigation from 'src/components/PageNavigation/PageNavigation'
 
@@ -15,8 +14,14 @@ const HomePage = () => {
         </Pane>
         <Pane flexGrow="1" display="flex">
           <PageNavigation />
-          <Pane flexGrow="1">
-            Dashboard
+          <Pane flexGrow="1" display="grid" placeItems="center" padding={minorScale(4)}>
+            <EmptyState
+              background="light"
+              title="Nothing here"
+              orientation="vertical"
+              icon={<WidgetIcon color="#C1C4D6" />}
+              iconBgColor="#EDEFF5"
+            />
           </Pane>
         </Pane>
       </Pane>

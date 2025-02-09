@@ -1,14 +1,14 @@
 import { render } from "@redwoodjs/testing/web";
 
-import IncomePage from "./IncomePage";
+import CalendarWrapper from "./CalendarWrapper";
 
 //   Improve this test with help from the Redwood Testing Doc:
-//   https://redwoodjs.com/docs/testing#testing-pages-layouts
+//    https://redwoodjs.com/docs/testing#testing-components
 
-describe("IncomePage", () => {
+describe("CalendarWrapper", () => {
   it("renders successfully", () => {
     expect(() => {
-      render(<IncomePage />);
+      render(<CalendarWrapper />);
     }).not.toThrow();
   });
 });

@@ -16,12 +16,31 @@ generator client {
 }
 
 model User {
-  id                  Int       @id @default(autoincrement())
-  email               String    @unique
+  id                  Int           @id @default(autoincrement())
+  email               String        @unique
   hashedPassword      String
   salt                String
   resetToken          String?
   resetTokenExpiresAt DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  role                String        @default("USER")
+  Transaction         Transaction[]
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id              Int             @id @default(autoincrement())
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  name            String
+  type            TransactionType
+  value           Float
+  transactionDate DateTime
+  user            User?           @relation(fields: [userId], references: [id])
+  userId          Int?
 }

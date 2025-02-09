@@ -1,20 +1,19 @@
-// import { Link, routes } from '@redwoodjs/router'
 import { Metadata } from "@redwoodjs/web";
 import { EmptyState, minorScale, Pane, WidgetIcon } from "evergreen-ui";
-import PageHeader from "src/components/PageHeader/PageHeader";
+
 import PageNavigation from "src/components/PageNavigation/PageNavigation";
 
-const SettingsPage = () => {
+const ProjectionsPage = () => {
   return (
     <>
-      <Metadata title="Home" description="Home page" />
+      <Metadata title="Projections" description="Projections page" />
       <Pane className="flex flex-col w-100" height="100vh">
-        <Pane flexGrow="1" display="flex" >
+        <Pane flexGrow="1" display="flex">
           <PageNavigation />
-          <Pane flexGrow="1" display="grid" placeItems="center" padding={minorScale(4)}>
+          <Pane flexGrow="1" padding={minorScale(4)}>
             <EmptyState
               background="light"
-              title="Nothing in Settings"
+              title="Nothing in Projections"
               orientation="vertical"
               icon={<WidgetIcon color="#C1C4D6" />}
               iconBgColor="#EDEFF5"
@@ -26,4 +25,4 @@ const SettingsPage = () => {
   )
 };
 
-export default SettingsPage;
+export default ProjectionsPage;

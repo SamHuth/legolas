@@ -12,5 +12,4 @@ type MenuItem = {
   icon: IconComponent
 }
 
-
 export { FormError, MenuItem }

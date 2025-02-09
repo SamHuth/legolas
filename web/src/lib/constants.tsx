@@ -1,29 +1,20 @@
 import { routes } from "@redwoodjs/router";
 import { MenuItem } from "./types";
-import { CalendarIcon, DollarIcon, ExchangeIcon, GridViewIcon } from "evergreen-ui";
+import { CalendarIcon, TimelineAreaChartIcon } from "evergreen-ui";
 
 const MENU_ITEMS:MenuItem[] = [
-  {
-    name: 'Dashboard',
-    url: routes.home(),
-    icon: GridViewIcon,
-  },
   {
     name: 'Calendar',
     url: routes.calendar(),
     icon: CalendarIcon,
   },
   {
-    name: 'Income',
-    url: routes.income(),
-    icon: DollarIcon,
-  },
-  {
-    name: 'Expenses',
-    url: routes.expenses(),
-    icon: ExchangeIcon,
+    name: 'Projections',
+    url: routes.projections(),
+    icon: TimelineAreaChartIcon,
   },
 ]
 
+const BRAND_NAME = "Finance Tracking"
 
-export { MENU_ITEMS }
+export { MENU_ITEMS, BRAND_NAME }
